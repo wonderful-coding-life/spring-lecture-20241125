@@ -1,6 +1,9 @@
 package com.example.jpa.repository;
 
 import com.example.jpa.model.Member;
+import com.example.jpa.model.MemberStats;
+import com.example.jpa.model.MemberStatsNative;
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.test.context.jdbc.Sql;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,8 +34,10 @@ public class MemberRepositoryTests {
     }
 
     @Test
+    @Transactional
     public void findById() {
-        log.info("{}", memberRepository.findById(1L));
+        Member member = memberRepository.findById(1L).orElseThrow();
+        log.info("{}", member);
     }
 
     @Test
@@ -106,8 +112,43 @@ public class MemberRepositoryTests {
     @Test
     public void getMemberStatsObject() {
         List<Object[]> results = memberRepository.getMemberStatsObject();
+        List<MemberStats> memberStats = new ArrayList<>();
         for (Object[] result : results) {
-            log.info("{}, {}, {}", result[0], result[1], result[2]);
+            memberStats.add(MemberStats.builder()
+                    .name((String)result[0])
+                    .email((String)result[1])
+                    .count((Long)result[2]).build());
+        }
+
+        for (MemberStats m : memberStats) {
+            log.info("{}", m);
+        }
+    }
+
+    @Test
+    public void getMemberStats() {
+        List<MemberStats> results = memberRepository.getMemberStats();
+        for (MemberStats m : results) {
+            log.info("{}", m);
+        }
+    }
+
+    @Test
+    public void getMemberStatsNativeObject() {
+        List<Object[]> memberStatsList = memberRepository.getMemberStatsNativeObjects();
+        for (Object[] ob : memberStatsList){
+            String name = (String)ob[0];
+            String email = (String)ob[1];
+            Long count = (Long)ob[2];
+            log.info("{} {} {}", name, email, count);
+        }
+    }
+
+    @Test
+    public void getMemberStatsNative() {
+        List<MemberStatsNative> memberStatsList = memberRepository.getMemberStatsNative();
+        for (MemberStatsNative memberStats : memberStatsList) {
+            log.info("{} {} {}", memberStats.getName(), memberStats.getEmail(), memberStats.getCount());
         }
     }
 }

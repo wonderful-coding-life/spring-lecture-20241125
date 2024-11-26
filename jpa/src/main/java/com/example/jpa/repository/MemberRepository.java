@@ -1,6 +1,8 @@
 package com.example.jpa.repository;
 
 import com.example.jpa.model.Member;
+import com.example.jpa.model.MemberStats;
+import com.example.jpa.model.MemberStatsNative;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -41,4 +43,13 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     @Query("SELECT m.name, m.email, COUNT(a.id) as count FROM Member m LEFT JOIN Article a ON a.member = m GROUP BY m ORDER BY count DESC")
     List<Object[]> getMemberStatsObject();
+
+    @Query(value="SELECT m.name, m.email, count(a.id) AS count FROM member m LEFT JOIN article a ON m.id = a.member_id GROUP BY m.id ORDER BY count DESC", nativeQuery = true)
+    List<Object[]> getMemberStatsNativeObjects();
+
+    @Query("SELECT new com.example.jpa.model.MemberStats(m.name, m.email, COUNT(a.id) as count) FROM Member m LEFT JOIN Article a ON a.member = m GROUP BY m ORDER BY count DESC")
+    List<MemberStats> getMemberStats();
+
+    @Query(value="SELECT m.name, m.email, count(a.id) AS count FROM member m LEFT JOIN article a ON m.id = a.member_id GROUP BY m.id ORDER BY count DESC", nativeQuery = true)
+    List<MemberStatsNative> getMemberStatsNative();
 }

@@ -1,10 +1,9 @@
 package com.example.jpa.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
+import java.util.List;
 
 @Entity
 //@Table(name="member")
@@ -20,4 +19,9 @@ public class Member {
     private String name;
     private String email;
     private Integer age;
+
+    @OneToMany(mappedBy = "member")
+    @ToString.Exclude
+    //@JsonIgnore
+    private List<Article> articles;
 }
