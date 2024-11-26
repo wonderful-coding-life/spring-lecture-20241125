@@ -38,11 +38,13 @@ public class MemberMapperTests {
     }
 
     @Test
-    public void findAllOrderByAgeAsc() {
-        List<Member> members = memberMapper.findAllOrderByAgeAsc();
+    public void findAllOrderBy() {
+        //List<Member> members = memberMapper.findAllOrderBy("age; DROP TABLE member; --");
+        List<Member> members = memberMapper.findAllOrderBy("age");
         for (Member member : members) {
             log.info("{}", member);
         }
+        log.info("{}", memberMapper.count());
     }
 
     @Test

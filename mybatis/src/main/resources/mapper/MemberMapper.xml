@@ -25,8 +25,8 @@
         SELECT * FROM member WHERE email=#{email}
     </select>
 
-    <select id="findAllOrderByAgeAsc" resultMap="memberResult">
-        SELECT * FROM member ORDER BY age ASC
+    <select id="findAllOrderBy" resultMap="memberResult">
+        SELECT * FROM member ORDER BY ${order}
     </select>
 
     <insert id="save" useGeneratedKeys="true" keyProperty="member.id" keyColumn="id">

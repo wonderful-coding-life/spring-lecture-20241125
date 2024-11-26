@@ -12,7 +12,7 @@ public interface MemberMapper {
     List<Member> findAll();
     Member findById(@Param("id") Long id);
     Optional<Member> findByEmail(@Param("email") String email);
-    List<Member> findAllOrderByAgeAsc();
+    List<Member> findAllOrderBy(@Param("order") String order);
     int count();
     int save(@Param("member") Member member);
     int update(@Param("member") Member member);
