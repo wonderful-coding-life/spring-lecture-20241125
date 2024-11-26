@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -37,4 +38,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     List<Member> findByOrderByNameAscAgeDesc();
     List<Member> findByNameContaining(String name, Sort sort);
     Page<Member> findByNameContaining(String name, Pageable pageable);
+
+    @Query("SELECT m.name, m.email, COUNT(a.id) as count FROM Member m LEFT JOIN Article a ON a.member = m GROUP BY m ORDER BY count DESC")
+    List<Object[]> getMemberStatsObject();
 }

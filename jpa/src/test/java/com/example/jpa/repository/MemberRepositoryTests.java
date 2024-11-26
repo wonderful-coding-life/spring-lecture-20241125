@@ -16,7 +16,7 @@ import java.util.Optional;
 
 @SpringBootTest
 @Slf4j
-@Sql(scripts = {"classpath:/test-member.sql"})
+@Sql(scripts = {"classpath:/test-script.sql"})
 public class MemberRepositoryTests {
     @Autowired
     private MemberRepository memberRepository;
@@ -103,5 +103,11 @@ public class MemberRepositoryTests {
         memberRepository.save(member);
     }
 
-
+    @Test
+    public void getMemberStatsObject() {
+        List<Object[]> results = memberRepository.getMemberStatsObject();
+        for (Object[] result : results) {
+            log.info("{}, {}, {}", result[0], result[1], result[2]);
+        }
+    }
 }
