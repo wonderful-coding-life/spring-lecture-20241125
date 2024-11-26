@@ -1,6 +1,9 @@
 package com.example.jpa.repository;
 
 import com.example.jpa.model.Member;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -29,6 +32,9 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     List<Member> findByAgeLessThanEqual(int age);
     List<Member> findByAgeBetween(int min, int max);
 
-
-
+    List<Member> findByOrderByNameAsc();
+    List<Member> findByOrderByNameDesc();
+    List<Member> findByOrderByNameAscAgeDesc();
+    List<Member> findByNameContaining(String name, Sort sort);
+    Page<Member> findByNameContaining(String name, Pageable pageable);
 }

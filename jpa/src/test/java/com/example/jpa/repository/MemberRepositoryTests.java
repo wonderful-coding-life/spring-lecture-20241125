@@ -5,6 +5,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.context.jdbc.Sql;
 
 import java.util.List;
@@ -52,6 +56,35 @@ public class MemberRepositoryTests {
     public void findByNameStartingWith() {
         List<Member> members = memberRepository.findByNameStartingWith("윤");
         for (Member member : members) {
+            log.info("{}", member);
+        }
+    }
+
+    @Test
+    public void findByOrderByNameAsc() {
+        List<Member> members = memberRepository.findByOrderByNameAscAgeDesc();
+        for (Member member : members) {
+            log.info("{}", member);
+        }
+    }
+
+    @Test
+    public void findByNameContainingWithSort() {
+        Sort sort = Sort.by(Sort.Order.asc("name"), Sort.Order.desc("age"));
+        List<Member> members = memberRepository.findByNameContaining("윤", sort);
+        for (Member member : members) {
+            log.info("{}", member);
+        }
+    }
+
+    @Test
+    public void findByNameContainingWithPageable() {
+        Sort sort = Sort.by(Sort.Order.asc("name"), Sort.Order.desc("age"));
+        Pageable pageable = PageRequest.of(0, 10,sort);
+        Page<Member> memberPage = memberRepository.findByNameContaining("윤", pageable);
+        log.info("getTotalElements = {}", memberPage.getTotalElements());
+        log.info("getTotalPages = {}", memberPage.getTotalPages());
+        for (Member member : memberPage.toList()) {
             log.info("{}", member);
         }
     }
