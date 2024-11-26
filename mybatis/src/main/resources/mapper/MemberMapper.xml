@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mybatis.mapper.MemberMapper">
+    <resultMap id="memberResult" type="com.example.mybatis.model.Member">
+        <result column="display_name" property="name"/>
+        <result column="email" property="email"/>
+        <result column="age" property="age"/>
+    </resultMap>
+
+    <select id="findAll" resultMap="memberResult">
+        SELECT * FROM member
+    </select>
+
+    <select id="findById" resultMap="memberResult">
+        SELECT * FROM member WHERE id=#{id}
+    </select>
+
+    <select id="count">
+        SELECT COUNT(*) FROM member
+    </select>
+
+    <select id="findByEmail" resultMap="memberResult">
+        SELECT * FROM member WHERE email=#{email}
+    </select>
+
+    <select id="findAllOrderByAgeAsc" resultMap="memberResult">
+        SELECT * FROM member ORDER BY age ASC
+    </select>
+
+    <insert id="save" useGeneratedKeys="true" keyProperty="member.id" keyColumn="id">
+        INSERT INTO member(display_name, email, age) VALUES(#{member.name}, #{member.email}, #{member.age})
+    </insert>
+
+    <update id="update">
+        UPDATE member SET name=#{member.name}, email=#{member.email}, age=#{member.age} WHERE id=#{member.id}
+    </update>
+
+    <delete id="delete">
+        DELETE FROM member WHERE id=#{id}
+    </delete>
+</mapper>
