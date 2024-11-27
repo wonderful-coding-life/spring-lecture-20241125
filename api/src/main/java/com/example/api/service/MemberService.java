@@ -4,6 +4,7 @@ import com.example.api.dto.MemberRequest;
 import com.example.api.dto.MemberResponse;
 import com.example.api.exception.NotFoundException;
 import com.example.api.model.Member;
+import com.example.api.repository.ArticleRepository;
 import com.example.api.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MemberService {
     private final MemberRepository memberRepository;
+    private final ArticleRepository articleRepository;
 
     public MemberResponse create(MemberRequest memberRequest) {
         Member member = Member.builder()
@@ -81,7 +83,8 @@ public class MemberService {
     }
 
     public void delete(Long id) {
-        memberRepository.findById(id).orElseThrow(NotFoundException::new);
+        Member member = memberRepository.findById(id).orElseThrow(NotFoundException::new);
+        articleRepository.deleteByMember(member);
         memberRepository.deleteById(id);
     }
 
