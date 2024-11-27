@@ -46,17 +46,17 @@ public class MemberControllerTests {
         String userRequestString = objectMapper.writeValueAsString(memberRequests);
 
         RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/api/members/batch")
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
                 .content(userRequestString);
 
         MvcResult mvcResult = mockMvc.perform(requestBuilder)
                 .andExpect(status().is2xxSuccessful())
                 .andReturn();
 
-        List<MemberResponse> memberResponses = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<>() {});
-
+        List<MemberResponse> memberResponses = objectMapper.readValue(mvcResult.getResponse().getContentAsByteArray(), new TypeReference<>() {});
         assertThat(memberResponses.size()).isEqualTo(2);
         assertThat(memberResponses.get(0).getId()).isNotNull();
+        assertThat(memberResponses.get(0).getName()).isEqualTo("윤서준");
     }
 }

@@ -8,20 +8,20 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
-import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
+@DisplayName("회원 서비스 단위 테스트")
 public class MemberServiceUnitTests {
     @Autowired
     private MemberService memberService;
 
-    @MockBean
+    @MockitoBean
     private MemberRepository memberRepository;
 
     @Test
