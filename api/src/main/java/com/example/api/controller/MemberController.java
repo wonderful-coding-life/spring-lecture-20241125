@@ -1,40 +1,45 @@
 package com.example.api.controller;
 
+import com.example.api.dto.MemberRequest;
+import com.example.api.dto.MemberResponse;
 import com.example.api.model.Member;
 import com.example.api.repository.MemberRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.api.service.MemberService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@RequestMapping("/api/members")
+@RequiredArgsConstructor
 public class MemberController {
-    @Autowired
-    private MemberRepository memberRepository;
+    private final MemberRepository memberRepository;
+    private final MemberService memberService;
 
-    @PostMapping("/api/members")
-    public Member post(@RequestBody Member member) {
-        return memberRepository.save(member);
+    @PostMapping()
+    public MemberResponse post(@RequestBody MemberRequest memberRequest) {
+        return memberService.create(memberRequest);
     }
 
-    @GetMapping("/api/members")
+    @GetMapping()
     public List<Member> get() {
         return memberRepository.findAll();
     }
 
-    @GetMapping("/api/members/{id}")
+    @GetMapping("/{id}")
     public Member getById(@PathVariable("id") Long id) {
         return memberRepository.findById(id).orElseThrow();
     }
 
-    @PutMapping("/api/members/{id}")
+    @PutMapping("/{id}")
     public Member put(@PathVariable("id") Long id, @RequestBody Member update) {
         Member member = memberRepository.findById(id).orElseThrow();
         update.setId(id);
         return memberRepository.save(update);
     }
 
-    @PatchMapping("/api/members/{id}")
+    @PatchMapping("/{id}")
     public Member patch(@PathVariable("id") Long id, @RequestBody Member update) {
         Member member = memberRepository.findById(id).orElseThrow();
         if (update.getName() != null) {
@@ -49,7 +54,7 @@ public class MemberController {
         return memberRepository.save(member);
     }
 
-    @DeleteMapping("/api/members/{id}")
+    @DeleteMapping("/{id}")
     public void delete(@PathVariable("id") Long id) {
         memberRepository.deleteById(id);
     }
