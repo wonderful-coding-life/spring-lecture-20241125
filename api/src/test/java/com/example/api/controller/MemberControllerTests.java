@@ -31,8 +31,41 @@ public class MemberControllerTests {
     private ObjectMapper objectMapper;
 
     @Test
-    @DisplayName("여러명 배치 생성")
+    @DisplayName("사용자 생성 테스트")
+    public void create() throws Exception {
+        // prepare MemberRequest for creation
+        MemberRequest memberRequest = MemberRequest.builder()
+                .name("윤서준")
+                .email("SeojunYoon@hanbit.co.kr")
+                .age(10).build();
+
+        // prepare json string from memberRequest
+        String requestString = objectMapper.writeValueAsString(memberRequest);
+
+        // prepare request builder
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/api/members")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .content(requestString);
+
+        // perform test using MockMvc and validate status code
+        MvcResult mvcResult = mockMvc.perform(requestBuilder)
+                .andExpect(status().is2xxSuccessful())
+                .andReturn();
+
+        // parse response body as MemberResponse object
+        MemberResponse memberResponse = objectMapper.readValue(mvcResult.getResponse().getContentAsByteArray(), MemberResponse.class);
+
+        // validate memberResponse
+        assertThat(memberResponse).isNotNull();
+        assertThat(memberResponse.getId()).isGreaterThan(0);
+        assertThat(memberResponse.getName()).isEqualTo("윤서준");
+    }
+
+    @Test
+    @DisplayName("사용자 배치 생성 테스트")
     public void createBatch() throws Exception {
+        // prepare List<MemberRequest> for creation
         List<MemberRequest> memberRequests = List.of(
                 MemberRequest.builder()
                         .name("윤서준")
@@ -43,20 +76,27 @@ public class MemberControllerTests {
                         .email("Kwangcheol-Yoon@hanbit.co.kr")
                         .age(43).build());
 
-        String userRequestString = objectMapper.writeValueAsString(memberRequests);
+        // prepare json string from memberRequest
+        String requestString = objectMapper.writeValueAsString(memberRequests);
 
+        // prepare request builder
         RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/api/members/batch")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .content(userRequestString);
+                .content(requestString);
 
+        // perform test using MockMvc and validate status code
         MvcResult mvcResult = mockMvc.perform(requestBuilder)
                 .andExpect(status().is2xxSuccessful())
                 .andReturn();
 
+        // parse response body as List<MemberResponse> object
         List<MemberResponse> memberResponses = objectMapper.readValue(mvcResult.getResponse().getContentAsByteArray(), new TypeReference<>() {});
+
+        // validate memberResponses
         assertThat(memberResponses.size()).isEqualTo(2);
-        assertThat(memberResponses.get(0).getId()).isNotNull();
-        assertThat(memberResponses.get(0).getName()).isEqualTo("윤서준");
+        for (MemberResponse memberResponse : memberResponses) {
+            assertThat(memberResponse.getId()).isGreaterThan(0);
+        }
     }
 }
