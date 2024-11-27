@@ -2,7 +2,6 @@ package com.example.api.controller;
 
 import com.example.api.dto.MemberRequest;
 import com.example.api.dto.MemberResponse;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
