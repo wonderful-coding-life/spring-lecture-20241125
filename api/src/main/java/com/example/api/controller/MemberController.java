@@ -1,11 +1,15 @@
 package com.example.api.controller;
 
+import com.example.api.dto.ArticleRequest;
+import com.example.api.dto.ArticleResponse;
 import com.example.api.dto.MemberRequest;
 import com.example.api.dto.MemberResponse;
 import com.example.api.model.Member;
 import com.example.api.repository.MemberRepository;
+import com.example.api.service.ArticleService;
 import com.example.api.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,6 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MemberController {
     private final MemberService memberService;
+    private final ArticleService articleService;
 
     @PostMapping()
     public MemberResponse post(@RequestBody MemberRequest memberRequest) {
@@ -27,8 +32,8 @@ public class MemberController {
     }
 
     @GetMapping()
-    public List<MemberResponse> get() {
-        return memberService.findAll();
+    public List<MemberResponse> get(@RequestParam(name="name", required = false) String name) {
+        return memberService.findAll(name);
     }
 
     @GetMapping("/{id}")
@@ -49,5 +54,11 @@ public class MemberController {
     @DeleteMapping("/{id}")
     public void delete(@PathVariable("id") Long id) {
         memberService.delete(id);
+    }
+
+    @PostMapping("/{id}/articles")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ArticleResponse post(@PathVariable("id") Long id, @RequestBody ArticleRequest articleRequest) {
+        return articleService.create(id, articleRequest);
     }
 }

@@ -5,13 +5,11 @@ import com.example.api.dto.MemberResponse;
 import com.example.api.exception.NotFoundException;
 import com.example.api.model.Member;
 import com.example.api.repository.MemberRepository;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
 
 @Service
 @RequiredArgsConstructor
@@ -54,7 +52,7 @@ public class MemberService {
     }
 
     //@Transactional(rollbackOn = {Exception.class, RuntimeException.class})
-    @Transactional
+    //@Transactional(rollbackFor = {Exception.class, RuntimeException.class})
     public List<MemberResponse> createBatch(List<MemberRequest> memberRequests) {
         //Thread.sleep(10);
         return memberRequests.stream().map(this::create).toList();
@@ -65,8 +63,15 @@ public class MemberService {
         return mapToMemberResponse(member);
     }
 
-    public List<MemberResponse> findAll() {
-        return memberRepository.findAll().stream().map(this::mapToMemberResponse).toList();
+    public List<MemberResponse> findAll(String name) {
+        if (name != null) {
+            return memberRepository.findByNameContainingOrderByNameAsc(name)
+                    .stream()
+                    .map(this::mapToMemberResponse)
+                    .toList();
+        } else {
+            return memberRepository.findAll().stream().map(this::mapToMemberResponse).toList();
+        }
 //        List<Member> members = memberRepository.findAll();
 //        List<MemberResponse> memberResponses = new ArrayList<>();
 //        for (Member member : members) {
