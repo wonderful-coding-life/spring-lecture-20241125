@@ -9,6 +9,7 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/lombok.main.iml" filepath="$PROJECT_DIR$/.idea/modules/lombok.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/mybatis.main.iml" filepath="$PROJECT_DIR$/.idea/modules/mybatis.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/mybatis.test.iml" filepath="$PROJECT_DIR$/.idea/modules/mybatis.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/security.main.iml" filepath="$PROJECT_DIR$/.idea/modules/security.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/spring-jdbc.main.iml" filepath="$PROJECT_DIR$/.idea/modules/spring-jdbc.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/spring-lecture-20241125.iml" filepath="$PROJECT_DIR$/spring-lecture-20241125.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/thymeleaf.main.iml" filepath="$PROJECT_DIR$/.idea/modules/thymeleaf.main.iml" />
