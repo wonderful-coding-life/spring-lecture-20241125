@@ -42,4 +42,12 @@ public class HelloController {
         //return "list-with-common";
         return "list-baselayout";
     }
+
+    @GetMapping("/link")
+    public String getLink(Model model) {
+        model.addAttribute("memberId", 3);
+        return "link";
+    }
+
+
 }

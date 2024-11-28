@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>link</title>
+</head>
+<body>
+
+<a th:href="@{/list(id=${memberId})}" href="/list?id=10">회원목록</a>
+<a th:href="@{/list/{id}/article(id=${memberId})}" href="/list/10">회원목록</a>
+
+</body>
+</html>
