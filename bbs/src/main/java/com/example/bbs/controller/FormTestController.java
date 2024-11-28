@@ -1,8 +1,11 @@
 package com.example.bbs.controller;
 
 import com.example.bbs.dto.TestForm;
+import com.example.bbs.dto.TestFormValidation;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -47,6 +50,23 @@ public class FormTestController {
         }
         if (testForm.getAddress().isBlank()) {
             return "test-form-c";
+        }
+        return "redirect:/";
+    }
+
+    @GetMapping("/d")
+    public String getD(@ModelAttribute("testForm") TestFormValidation testForm) {
+        return "test-form-d";
+    }
+
+    @PostMapping("/d")
+    public String postD(@Valid @ModelAttribute("testForm") TestFormValidation testForm, BindingResult bindingResult) {
+        log.info("post d {}", testForm);
+        if (testForm.getName().equals("admin")) {
+            bindingResult.rejectValue("name", "NotAllowed", "사용할 수 없는 이름입니다");
+        }
+        if (bindingResult.hasErrors()) {
+            return "test-form-d";
         }
         return "redirect:/";
     }
