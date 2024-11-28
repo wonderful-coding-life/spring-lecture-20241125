@@ -1,6 +1,5 @@
 package com.example.api.service;
 
-import com.example.api.dto.MemberRequest;
 import com.example.api.dto.MemberResponse;
 import com.example.api.model.Member;
 import com.example.api.repository.MemberRepository;
